@@ -1,0 +1,96 @@
+<mat-toolbar
+    style="background: var(--surfaces-light-surface-5, linear-gradient(0deg, rgba(105, 145, 214, 0.14) 0%, rgba(105, 145, 214, 0.14) 100%), #FFF);">
+    <img src="/assets/rfp_Demo_logo.PNG" alt="Icon" class="rfpLogo-svg">
+</mat-toolbar>
+<div class="container">
+    <div class="rfp-header">
+        <mat-card class="header-card">
+            <h2 class="RFP-accelerator-text">
+                <span class="icon-container">
+                    <img src="/assets/rfp-text-icon.svg" alt="Star Icon" class="star-icon"></span>
+                RFP Accelerator,<br>
+                Reimagined with AI
+            </h2>
+            <p class="summary">Accelerate RFP responses and propel business growth with GenAI,
+                the intelligent RFP automation solution powered by Vertex AI and Gemini.</p>
+            <button class="start-button" (click)="userSignIn()">
+                <img src="/assets/icon.svg" alt="Icon" class="icon-svg">
+                Start
+            </button>
+        </mat-card>
+    </div>
+    <div class="features">
+        <mat-card class="card">
+            <img src="/assets/home-card1.svg" alt="Icon" class="icon-card">
+            <h1 class="card-header">Speed up your RFP responses and win more business</h1>
+
+        </mat-card>
+        <mat-card class="card">
+            <img src="/assets/home-card2.svg" alt="Icon" class="icon-card">
+            <h1 class="card-header">Expert-level accuracy and consistent high quality in every response</h1>
+
+        </mat-card>
+        <mat-card class="card">
+            <img src="/assets/home-card3.svg" alt="Icon" class="icon-card">
+            <h1 class="card-header">Effortlessly streamline and accelerate your workflow with AI-powered tools</h1>
+        </mat-card>
+    </div>
+
+
+      <div class="login-overlay" *ngIf="showGenericLogin">
+        <div class="form-wrapper">
+          <form class="example-form">   
+            <h2 style="font-weight: 700;">Login</h2>
+  
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>User Name</mat-label>
+              <input
+                type="text"
+                matInput
+                [formControl]="userNameFormControl"
+                placeholder="Enter User Name"
+              />
+              <i class="material-icons">person</i>
+              <mat-error *ngIf="userNameFormControl.hasError('required')">
+                user name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+    
+    
+    
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Password</mat-label>
+              <input
+                type="password"
+                matInput
+                [formControl]="passwFormControl"
+                placeholder="Enter password"
+              />
+              <i class="material-icons">lock</i>
+              <mat-error *ngIf="passwFormControl.hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+    
+            <div class="buttons-div">
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="!userNameFormControl.valid || !passwFormControl.valid"
+                class="btns-div"
+                (click)="generalSignIn()"
+              >Login</button>
+    
+              <button mat-stroked-button color="accent"  class="btns-div" (click)="backToLogin()">Back</button>
+            </div>
+    
+          </form>
+        </div>
+      </div>
+</div>
+
+
+    <div *ngIf="!showSpinner"  class="overlay">
+      <div class="spinner-3"></div>
+    </div>
+    

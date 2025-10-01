@@ -1,0 +1,90 @@
+<div class="upload_document_container">
+    <div class="title_container">
+        <div class="content_title">
+            <div class="content_title_line1">
+                <p><b>Home / Create new RFP /</b></p>
+            </div>
+            <div class="content_title_line2">
+                <p>Upload RFP</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="md-stepper-horizontal">
+        <div class="md-step active">
+            <div class="md-step-circle">
+                <span><img src="assets/upload-rfp.svg" alt="Upload RFP" width="25" height="25" /></span>
+            </div>
+            <div class="md-step-title">Upload RFP</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step">
+            <div class="md-step-circle">
+                <span><img src="assets/preview-questions.svg" alt="Preview Questions" width="25" height="25" /></span>
+            </div>
+            <div class="md-step-title">Preview Questions</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+        </div>
+        <div class="md-step">
+            <div class="md-step-circle">
+                <span><img src="assets/review-model-response.svg" alt="Review Model Response" width="25"
+                        height="25" /></span>
+            </div>
+            <div class="md-step-title">Review Model Response</div>
+            <div class="md-step-bar-left"></div>
+            <div class="md-step-bar-right"></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="content_left">
+            <div class="content_left_header">
+                RFP Details
+            </div>
+            <div class="content_left_data">
+                <p>Please provide the required details for the RFP below, including the account/company name, and the
+                    URL of
+                    the questions sheet. Ensure all fields are accurately completed to proceed.</p>
+            </div>
+        </div>
+        <div class="content_right">
+            <form [formGroup]="upload">
+                <div class="input_data">
+                    <div class="form-field">
+                        <input type="text" id="RfpName" name="RfpName" formControlName="RfpName" class="input_values"
+                            (change)="areFieldsFilled()" [(ngModel)]="RfpName" placeholder=" " required>
+                        <label for="RfpName">RFP Name</label>
+                    </div>
+                    <div class="form-field">
+                        <input type="text" id="accountName" name="accountName" formControlName="accountName" class="input_values"
+                            (change)="areFieldsFilled()" [(ngModel)]="accountName" placeholder=" " required>
+                        <label for="accountName">Account Name</label>
+                    </div>
+                    <div class="form-field">
+                        <input type="text" id="rfpUrl" name="rfpUrl" formControlName="rfpUrl" class="input_values"
+                            (change)="areFieldsFilled()" [(ngModel)]="rfpUrl" placeholder=" " required>
+                        <label for="rfpUrl">RFP URL</label>
+                    </div>
+                </div>
+            </form>
+            <div class="urlErr" style="color:red" *ngIf="urlError">*Invalid file format detected. Please upload the
+                valid spreadsheet</div>
+            <div class="buttons">
+                <button mat-fab extended class="upload_buttons" type="back" (click)="backToDashboard()">
+                    <span style="color:Black;font-weight: bold;">Back</span>
+                </button>
+                <button mat-fab extended class="upload_buttons"
+                    [style.background-color]="(rfpUrl && RfpName && accountName)?'#0B57D0':'rgba(31, 31, 31, 0.12)'" (click)="uploadDocument()"
+                    [disabled]="!RfpName || !rfpUrl || !accountName" [ngClass]="{'disabled-button': !RfpName || !rfpUrl || !accountName}">
+                    <span [style.color]="(!RfpName && !rfpUrl && !accountName) ? 'rgba(0, 0, 0, 0.39)' : 'white'"><b>Preview
+                        Questions</b></span>
+                </button>
+            </div>
+            <div *ngIf="loading" class="overlay">
+                <div class="spinner-3"></div>
+              </div>
+        </div>
+    </div>
+</div>

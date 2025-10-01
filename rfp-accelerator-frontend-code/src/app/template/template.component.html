@@ -1,0 +1,52 @@
+<div class="template_container">
+  <mat-toolbar class="toolbar">
+    <mat-toolbar
+      style="background: var(--surfaces-light-surface-5, linear-gradient(0deg, rgba(105, 145, 214, 0.14) 0%, rgba(105, 145, 214, 0.14) 100%), #FFF);width: 20%;">
+      <img src="/assets/rfp_Demo_logo.PNG" alt="Icon" class="rfpLogo-svg">
+    </mat-toolbar>
+    <div class="photo_container">
+      <div class="unMain" style="color:#041E49">
+        <span class="unName">
+          <!-- Pradeep -->
+          {{ userName }}
+        </span>
+        <!-- <span class="unEmail">
+          {{ userEmail }}
+        </span> -->
+      </div>
+     <button (click)="toggleLogout()" class="user_photo">
+        <img class="photo" (error)="handleImageError($event)" [src]="userPhoto" alt="photo" />
+      </button>
+    </div>
+    <div>
+      <button *ngIf="showLogoff" (click)="logout()" class="logout_btn">
+        <span class="btncur">Logout</span>
+      </button>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container class="sidenv-container" autosize>
+    <mat-sidenav #sidenav class="main-sidenav" mode="side" opened="true">
+      
+      <mat-nav-list class="sidenavpad">
+        <mat-list-item (click)="isExpanded = !isExpanded" class="sideNavRad">
+          <mat-icon mat-list-icon class="iconStyle">menu</mat-icon>
+          <span class="text-width" *ngIf="isExpanded || isShowing">Menu</span>
+        </mat-list-item>
+        <mat-list-item (click)="showSubmenu = !showSubmenu" routerLink="/dashboard" routerLinkActive="active"
+          class="sideNavRad">
+          <mat-icon svgIcon="homea" class="iconStyle"> </mat-icon>
+          <span class="text-width" *ngIf="isExpanded || isShowing">Dashboard</span>
+        </mat-list-item>
+        <mat-list-item (click)="showSubmenu = !showSubmenu"
+          [routerLink]="!isGenerateRfpDisabled ? '/uploadDocument' : null" routerLinkActive="active" class="sideNavRad"
+          [disabled]="isGenerateRfpDisabled" [ngClass]="{'disabled-item': isGenerateRfpDisabled}">
+          <mat-icon svgIcon="addf" class="iconStyle">upload</mat-icon>
+          <span class="text-width" *ngIf="isExpanded || isShowing">Generate RFPs</span>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-nav-list> </mat-nav-list>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>
+  
+</div>

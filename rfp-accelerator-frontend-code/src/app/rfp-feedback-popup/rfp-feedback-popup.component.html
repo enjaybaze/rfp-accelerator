@@ -1,0 +1,99 @@
+<div class="feedback_popup">
+  <div class="preview_document_container">
+    <!-- Feedback Header -->
+    <div class="feedback_header">
+      <div class="feedback_title">Provide Feedback</div>
+      <div class="feedback_close"><mat-icon (click)="closeFeedback()">close</mat-icon></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main_content">
+      <div class="table_sheet">
+        <div class="feedback_pages_scroll">
+          <!-- Page Information -->
+          <div class="feedback_sheet_name">
+            <div class="dynamic_tabs" *ngIf="filteredDetails.length > 0">
+              <p class="sheet_text">{{ filteredDetails[0].page_name }}<span class="btnradactiv">{{ totalQuestions
+                  }}</span></p>
+            </div>
+          </div>
+
+          <!-- Pagination and Navigation -->
+          <div class="feedback_scroll">
+            <div class="pagination_info">
+              {{ currentPageData.index }} of {{ totalQuestions }}
+              <button mat-icon-button color="primary" (click)="goToPage(filteredDetails, currentPageData.index-1)"
+                [disabled]="currentPageData.index === 1">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="goToPage(filteredDetails, currentPageData.index+1)"
+                [disabled]="currentPageData.index === totalQuestions">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Feedback Table -->
+        <div class=feedback_table_area>
+          <div class="feedback_table">
+            <table mat-table [dataSource]="filteredDetails" class="mat-elevation-z8">
+              <!-- Table Columns -->
+              <ng-container matColumnDef="sNo" class="Qno">
+                <th class="Qno_header table_header_text" mat-header-cell *matHeaderCellDef> <b>S.No.</b> </th>
+                <td class="Qno_row table_row_text" mat-cell *matCellDef="let element"> {{ element.feedback_data.index }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="question" class="question">
+                <th class="question_header table_header_text" mat-header-cell *matHeaderCellDef> <b>Question</b></th>
+                <td class="question_row table_row_text" mat-cell *matCellDef="let element"><textarea
+                    class="question_textarea" matInput [(ngModel)]="element.feedback_data.question" rows="2" readonly>
+          </textarea></td>
+              </ng-container>
+              <ng-container matColumnDef="search_refinement">
+                <th class="search_refinement_header table_header_text" mat-header-cell *matHeaderCellDef><b> Search
+                    Refinement</b></th>
+
+                <td class="search_refinement_row table_row_text" mat-cell *matCellDef="let element">{{
+                  element.feedback_data.search_refinement }}</td>
+
+              </ng-container>
+              <ng-container matColumnDef="model_response">
+                <th class="model_response_header table_header_text" mat-header-cell *matHeaderCellDef> <b>Model
+                    Response</b>
+                </th>
+                <td class="model_response_row table_row_text" mat-cell *matCellDef="let element">
+                  <textarea class="model_response_textarea" matInput [(ngModel)]="element.feedback_data.result1"
+                    rows="4" readonly>
+            </textarea>
+
+                </td>
+              </ng-container>
+              <tr mat-header-row class="table_header" *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="table_row"></tr>
+            </table>
+          </div>
+
+          <div class="feedback_content">
+            <div class="feedback_container" *ngFor="let element of filteredDetails">
+              <div class="feedback_item">
+                <textarea class="feedback_text" [(ngModel)]="element.feedback_data.pa_feedback"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="button_container">
+            <div class="button_container">
+              <div class="button_content">
+                <button class="button_label" mat-raised-button color="primary"
+                  [style.background-color]="isButtonDisabled?'rgba(31, 31, 31, 0.12)':'#0B57D0'"
+                  [disabled]="isButtonDisabled" (click)="saveReviewData()">
+                  <div class="button_icon" style="color:white;"><img src="assets/save_button.svg" alt="save feedback"
+                      width="18" height="18" /><b>Save & Close</b>
+                  </div>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

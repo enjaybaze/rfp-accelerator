@@ -1,0 +1,103 @@
+<div class="preview_document_container">
+  <div class="title_container">
+    <div class="content_title">
+      <div class="content_title_line1">
+        <p><b>Home / Create new RFP /</b></p>
+      </div>
+      <div class="content_title_line2">
+        <p>Preview Questions</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="md-stepper-horizontal">
+    <div class="md-step active">
+      <div class="md-step-circle">
+        <span><img src="assets/checked-widget.svg" alt="Upload RFP" width="25" height="25" /></span>
+      </div>
+      <div class="md-step-title">Upload RFP</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step active">
+      <div class="md-step-circle">
+        <span><img src="assets/preview-questions.svg" alt="Preview Questions" width="25" height="25" /></span>
+      </div>
+      <div class="md-step-title">Preview Questions</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+    <div class="md-step">
+      <div class="md-step-circle">
+        <span><img src="assets/review-model-response.svg" alt="Review Model Response" width="25" height="25" /></span>
+      </div>
+      <div class="md-step-title">Review Model Response</div>
+      <div class="md-step-bar-left"></div>
+      <div class="md-step-bar-right"></div>
+    </div>
+  </div>
+
+  <div class="PARefinement">
+    <div class="radibtn">
+      <div class="tabsseadiv">
+        <div class="tabs_container">
+          <div class="dynamic_tabs" *ngFor="let item of dataArray; let i = index">
+            <button mat-button (click)="tabChanged(i)" [class.active]="i === activeTabIndex">
+              {{ item.name}} <span class="btnradactiv" [class.active]="i === activeTabIndex">
+                {{dataArray[i].data.length}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-card class="refinement-table">
+
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matPaginator>
+        <ng-container matColumnDef="qNo">
+          <th class="Qno table-text" mat-header-cell *matHeaderCellDef> <b>S.No</b> </th>
+          <td class="Qno table-text" mat-cell *matCellDef="let element"> {{element.question_number}} </td>
+        </ng-container>
+        <ng-container matColumnDef="question">
+          <th class="Question table-text" mat-header-cell *matHeaderCellDef> <b>Question</b></th>
+          <td class="Question table-text" mat-cell *matCellDef="let element">{{element.question}}
+            <!-- <textarea class="read-textarea" matInput [value]="element.question" rows="2" readonly></textarea> -->
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="searchRefinement">
+          <th class="Refinement table-text" mat-header-cell *matHeaderCellDef> <b>Search Refinement</b> </th>
+          <td class="Refinement table-text" mat-cell *matCellDef="let element"> {{element.search_refinement}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <div class="table_pagination">
+        <mat-paginator class="demo-paginator" (page)="onPageChange($event)" [pageSize]="pageSize" [disabled]="disabled"
+          [showFirstLastButtons]="showFirstLastButtons" [pageSizeOptions]="pageSizeOptions" aria-label="Select page">
+                </mat-paginator>
+      </div>
+    </mat-card>
+    <br>
+    <div class="buttons">
+      <button mat-fab extended class="upload_buttons_back" type="back" (click)="deleteRfp()">
+        <span style="color:Black"><b>Back</b></span>
+      </button>
+
+      <button mat-fab extended [style.background-color]="'#0B57D0'" (click)="refinementRunModel()"
+        class="upload_buttons">
+        <span style="color:white;">
+          <img src="/assets/icons/generateres.svg" style="width: 18px;height: 18px;margin-top: 6px;margin-right: 6px;margin-bottom: -4px;" alt="GenerateIcon">
+        </span>
+          <span>
+            <b>Generate Responses</b>
+          </span>
+      </button>
+    </div>
+
+    <br>
+     <!-- Loading spinner -->
+     <div *ngIf="loading" class="overlay">
+      <div class="spinner-3"></div>
+    </div>
+  </div>
+</div>
+

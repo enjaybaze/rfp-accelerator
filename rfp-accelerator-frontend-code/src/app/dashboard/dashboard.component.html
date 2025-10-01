@@ -1,0 +1,181 @@
+<div class="dashboard">
+    <div class="dashboard_content_top">
+        <div class="content_top_header">
+            <div class="content_top_header1">
+                Welcome {{showUserName}}
+            </div>
+            <div class="content_top_header2">
+                <p>Supercharge your productivity with the RFP Accelerator.</p>
+            </div>
+        </div>
+        <div>
+            <button mat-fab extended class="content_top_button" *ngIf="dataSource?.data?.length !== 0"
+                (click)="createRfp()" [disabled]="isInProgress">
+                <div class="button_content"><img src="assets/generate-rfp-response.svg" alt="Generate RFP Response"
+                        width="21" height="22" /><b>Generate RFP Response</b></div>
+            </button>
+        </div>
+
+    </div>
+    <div class="dashboard_content_center" *ngIf="dataSource?.data?.length === 0">
+        <div class="center_card1">
+            <div class="card_container">
+                <div class="card_container_content">
+                    <div class="card1_title">Total Generated RFPs</div>
+                    <div class="card_value">{{totalUploadedRFPsnd}}</div>
+                </div>
+                <div class="cardicon_position">
+                    <img src="assets/card1-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                </div>
+            </div>
+        </div>
+        <div class="center_card2">
+            <div class="card_container">
+                <div class="card_container_content">
+                    <div class="card1_title">Generated Responses</div>
+                    <div class="card_value">{{totalGeneratedRFPsnd}}</div>
+                </div>
+                <div class="cardicon_position">
+                    <img src="assets/card2-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                </div>
+            </div>
+        </div>
+        <div class="center_card3">
+            <div class="card_container">
+                <div class="card_container_content">
+                    <div class="card1_title">Average Response Time (MM:SS)</div>
+                    <div class="card_value">{{avgResponseTimend}}</div>
+                </div>
+                <div class="cardicon_position">
+                    <img src="assets/card3-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_content_center" *ngIf="dataSource?.data?.length !== 0">
+        <div class="center_card1">
+            <div class="card_container">
+                <div class="card_container_content">
+                    <div class="card1_title">Total Generated RFPs</div>
+                    <div class="card_value">{{totalUploadedRFPs}}</div>
+                </div>
+                <div class="cardicon_position">
+                    <img src="assets/card1-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                </div>
+            </div>
+        </div>
+        <div class="center_card2">
+            <div class="card_container">
+                <div class="card_container_content">
+                    <div class="card1_title">Generated Responses</div>
+                    <div class="card_value">{{totalGeneratedRFPs}}</div>
+                </div>
+                <div class="cardicon_position">
+                    <img src="assets/card2-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                </div>
+            </div>
+        </div>
+        <div class="center_card3">
+            <div class="card_container">
+                <div class="card_container_content">
+                    <div class="card1_title">Average Response Time (MM:SS)</div>
+                    <div class="card_value">{{avgResponseTime}}</div>
+                </div>
+                <div class="cardicon_position">
+                    <img src="assets/card3-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard_content_bottom">
+        <div class="bottom_header">My proposals</div>
+        <div class="dashboard_table">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort matPaginator>
+
+                
+
+                <ng-container matColumnDef="rfpID" class="header_rfp">
+                    <th mat-header-cell *matHeaderCellDef class="header_rfp rfpID_header table_header">
+                        <b> RFP ID</b>
+                        <span class="header_rfp" (click)="toggleSortOrder()">
+                            <mat-icon *ngIf="isAscending">arrow_upward</mat-icon>
+                            <mat-icon *ngIf="!isAscending">arrow_downward</mat-icon>
+                        </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="td_text">{{element.rfpID}}</td>
+                </ng-container>
+                <ng-container matColumnDef="rfpName" class="header_rfp_name">
+                    <th mat-header-cell *matHeaderCellDef class="header_rfp_name rfpname_header table_header"> <b>RFP
+                            Name</b>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="rfpname_header"> {{element.rfp_name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="accountName" class="header_account_name">
+                    <th mat-header-cell *matHeaderCellDef class="header_account_name accountname_header table_header">
+                        <b> Account Name </b>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="accountname_header"> {{element.account_name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="status" class="header_status">
+                    <th mat-header-cell *matHeaderCellDef class="header_status status_header table_header">
+                        <b>Status</b> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="navigateToReview(element)" [ngClass]="{
+                          'status_background': true,
+                          'status-inprogress': element.dashboard_status === 'In Progress',
+                          'status-complete': element.dashboard_status === 'Completed',
+                        }">{{element.dashboard_status}}</button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="submissionDate" class="header_submissiondate">
+                    <th mat-header-cell *matHeaderCellDef
+                        class="header_submissiondate submissiondate_header table_header"><b> Submission Date</b></th>
+                    <td mat-cell *matCellDef="let element" class="td_text"> {{element.upload_time}} </td>
+                </ng-container>
+                <ng-container matColumnDef="download" class="header_download">
+                    <th mat-header-cell *matHeaderCellDef class="header_download table_header"> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button (click)="downloadResponses(element)"
+                            [disabled]="element.dashboard_status === 'In Progress'"
+                            [ngClass]="{'disabled-button':element.dashboard_status !== 'Completed'}">
+                            <img src="assets/download-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                        </button>
+                        <!-- <button mat-icon-button (click)="deleteData(element)">
+                            <img src="assets/download-icon.svg" alt="Generate RFP Response" width="33" height="29" />
+                        </button> -->
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+            <div *ngIf="dataSource?.data?.length === 0" >
+                <div class="centered-content">
+                    <div class="nodatabtn"><img src="assets/icons/nodata.svg" alt="No Data" /></div>
+                    <div>
+                        <p class="header_class">No RFPs generated yet</p>
+                        <p class="header_subclass">Start by creating your first RFP with the power of Gemini.</p>
+                    </div>
+                    <div class = "noData_button_container">
+                        <button mat-fab extended class="content_top_button" (click)="createRfp()">
+                            <div class="button_content"><img src="assets/generate-rfp-response.svg"
+                                    alt="Generate RFP Response" width="21" height="22" /><b>Generate RFP Response</b>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table_pagination">
+                <mat-paginator class="demo-paginator" (page)="onPageChange($event)" [pageSize]="pageSize"
+                    [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+                    [pageSizeOptions]="pageSizeOptions" aria-label="Select page">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="loading" class="overlay">
+        <div class="spinner-3"></div>
+    </div>
+</div>
