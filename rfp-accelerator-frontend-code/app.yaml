@@ -1,0 +1,10 @@
+service: <FRONTEND SERVICE NAME>
+runtime: python39
+instance_class: F4_1G
+handlers:
+
+  - url: /
+    static_files: dist/index.html
+    upload: dist/index.html
+  - url: /
+    static_dir: dist
