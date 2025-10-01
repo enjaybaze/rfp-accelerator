@@ -26,12 +26,11 @@ from sqlalchemy import create_engine
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain_google_vertexai import VertexAIEmbeddings
-from langchain_community.llms import VertexAI
 from req_prop_packages.retrievers import get_all_retrievers
 from req_prop_packages.config import (LOG_NAME, PROJECT_ID, REGION, SEARCH_EMBEDDING_MODEL,DB_API)
 from req_prop_packages.merge_retriever import combine_retriever
 from req_prop_packages.google_translate import translate_text
-from req_prop_packages.custom_llm import CustomLLM
+from req_prop_packages.custom_llm import get_llm
 from req_prop_packages.status_output import print_status
 import requests
 
@@ -132,17 +131,7 @@ def llm_model(model_parameters: dict):
     Returns:
         llm object.
     """
-    if model_parameters['preview_model']:
-        ## Gemini model rquires some custom LLM settings
-        llm = CustomLLM(model=model_parameters['model_name'])
-    else:
-        llm = VertexAI(project=PROJECT_ID,
-                       model_name=model_parameters['model_name'],
-                       temperature=model_parameters['temperature'],
-                       max_output_tokens=model_parameters['max_output_tokens'],
-                       top_p=model_parameters['top_p'],
-                       top_k=model_parameters['top_k'], verbose=False)
-    return llm
+    return get_llm(model_parameters)
 
 
 

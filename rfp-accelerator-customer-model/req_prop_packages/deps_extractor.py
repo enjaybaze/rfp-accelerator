@@ -25,7 +25,6 @@ from pandas import DataFrame
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_google_vertexai import VertexAI
 from req_prop_packages.config import (LOG_NAME, DEPS_LLM,
                             DEPS_TEMPERATURE, DEPS_MAX_TOKEN,
                             DEPS_MODEL_MAX_CONTEXT_LENGTH,
@@ -34,20 +33,18 @@ from req_prop_packages.config import (LOG_NAME, DEPS_LLM,
                             SEARCH_MODEL_TOP_P, SEARCH_MODEL_TOP_K,
                             SEARCH_PREVIEW_MODEL,
                             SEARCH_LANGUAGE_TRANSLATION, SEARCH_PAGE_SIZE)
-from req_prop_packages.custom_llm import CustomLLM
+from req_prop_packages.custom_llm import get_llm
 from req_prop_packages.status_output import print_status
 
 
 logging_client = logging.Client()
 logger = logging_client.logger(LOG_NAME)
 
-if "gemini" in DEPS_LLM:
-    print_status("Gemini deps calc activated")
-    deps_llm = CustomLLM(model=DEPS_LLM)
-else:
-    deps_llm = VertexAI(model_name=DEPS_LLM,
-                        temperature=DEPS_TEMPERATURE,
-                        max_output_tokens=DEPS_MAX_TOKEN)
+deps_params = {
+    "temperature": DEPS_TEMPERATURE,
+    "max_output_tokens": DEPS_MAX_TOKEN
+}
+deps_llm = get_llm(deps_params)
 
 
 class DepsQues(BaseModel):

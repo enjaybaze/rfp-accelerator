@@ -14,71 +14,54 @@
 """
 Module for defining custom llm wrapper using langchain
 """
-from typing import Any, List, Mapping, Optional
-from vertexai.preview import generative_models
-from langchain.callbacks.manager import CallbackManagerForLLMRun
-from langchain_core.language_models.llms import LLM
-from req_prop_packages.config import (SEARCH_MODEL_TEMPERATURE,
-                                   SEARCH_MODEL_MAX_OUTPUT_TOKENS,
-                                   SEARCH_MODEL_TOP_P)
+from typing import Optional, Dict, Any
+from langchain_google_vertexai import VertexAI
+from langchain_community.llms import HuggingFaceHub
+from langchain_anthropic import ChatAnthropic
 
+from req_prop_packages.config import (LLM_PROVIDER, GEMINI_MODEL, CLAUDE_MODEL,
+                                      LLAMA_MODEL, SEARCH_MODEL_TEMPERATURE,
+                                      SEARCH_MODEL_MAX_OUTPUT_TOKENS)
 
-def generate(text: str, model: str) -> str:
-    """Generates text using a generative model.
+def get_llm(params: Optional[Dict[str, Any]] = None):
+    """
+    Returns the appropriate LLM client based on the provider specified in the config.
 
     Args:
-        text: The text to generate from.
-        model: The generative model to use.
+        params (Optional[Dict[str, Any]]): A dictionary of parameters to configure the LLM.
+                                           Overrides the default values from the config.
 
     Returns:
-        The generated text.
+        langchain_core.language_models.llms.LLM: The LLM client.
     """
-    response_text = ""
-    model = generative_models.GenerativeModel(model)
-    responses = model.generate_content(
-        text,
-        generation_config={
-            "max_output_tokens": SEARCH_MODEL_MAX_OUTPUT_TOKENS,
-            "temperature": SEARCH_MODEL_TEMPERATURE,
-            "top_p": SEARCH_MODEL_TOP_P
-        },
-        stream=True,
-    )
-    for response in responses:
-        response_text += response.candidates[0].content.parts[0].text
-    return response_text
+    if params is None:
+        params = {}
 
+    temperature = params.get("temperature", SEARCH_MODEL_TEMPERATURE)
+    max_output_tokens = params.get("max_output_tokens", SEARCH_MODEL_MAX_OUTPUT_TOKENS)
 
-class CustomLLM(LLM):
-    """A custom LLM model."""
-    model: str
-
-    @property
-    def _llm_type(self) -> str:
-        """Get the type of the LLM."""
-        return "custom"
-
-    def _call(
-        self,
-        prompt: str,
-        stop: Optional[List[str]] = None,
-        run_manager: Optional[CallbackManagerForLLMRun] = None,
-        **kwargs: Any,
-    ) -> str:
-        """Call the custom LLM model.
-
-        Args:
-            prompt: The prompt to generate text from.
-            stop: A list of tokens to stop generating text at.
-            run_manager: A callback manager for the LLM run.
-            **kwargs: Additional keyword arguments to pass to the model.
-
-        Returns:
-            The generated text.
-        """
-        return generate(prompt, self.model)
-
-    @property
-    def _identifying_params(self) -> Mapping[str, Any]:
-        """Get the identifying parameters."""
-        return {"n": self.model}
+    if LLM_PROVIDER == "gemini":
+        return VertexAI(model_name=GEMINI_MODEL,
+                        temperature=temperature,
+                        max_output_tokens=max_output_tokens,
+                        **params)
+    elif LLM_PROVIDER == "claude":
+        # Claude uses 'max_tokens_to_sample' instead of 'max_output_tokens'
+        claude_params = params.copy()
+        claude_params.pop('max_output_tokens', None) # remove to avoid conflict
+        return ChatAnthropic(model=CLAUDE_MODEL,
+                             temperature=temperature,
+                             max_tokens_to_sample=max_output_tokens,
+                             **claude_params)
+    elif LLM_PROVIDER == "llama":
+        # Llama from HuggingFaceHub uses 'max_new_tokens'
+        llama_params = params.copy()
+        llama_params.pop('max_output_tokens', None)
+        return HuggingFaceHub(repo_id=LLAMA_MODEL,
+                              model_kwargs={
+                                  "temperature": temperature,
+                                  "max_new_tokens": max_output_tokens,
+                                  **llama_params
+                              })
+    else:
+        raise ValueError(f"Unsupported LLM provider: {LLM_PROVIDER}")

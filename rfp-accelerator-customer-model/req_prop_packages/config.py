@@ -60,3 +60,19 @@ DB_API = DATABASE_CONFIG_API['DATABASE_API']
 AUTH_CONFIG = config['auth']
 SECRET_ID = AUTH_CONFIG['SECRET_ID']
 SECRETS_NAME = str(AUTH_CONFIG['SECRETS_NAME'])
+
+# LLM provider configuration
+LLM_CONFIG = config['llm']
+LLM_PROVIDER = LLM_CONFIG['provider']
+
+# Gemini configuration
+GEMINI_CONFIG = config['gemini']
+GEMINI_MODEL = GEMINI_CONFIG['model']
+
+# Claude configuration
+CLAUDE_CONFIG = config['claude']
+CLAUDE_MODEL = CLAUDE_CONFIG['model']
+
+# Llama configuration
+LLAMA_CONFIG = config['llama']
+LLAMA_MODEL = LLAMA_CONFIG['model']
