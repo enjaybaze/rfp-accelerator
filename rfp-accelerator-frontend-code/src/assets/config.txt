@@ -1,0 +1,2 @@
+baseURL = <BACKEND BASE URL>
+aiModelBaseUrl =<AI MODEL BASE URL>
