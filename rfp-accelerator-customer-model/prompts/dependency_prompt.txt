@@ -1,0 +1,50 @@
+Imagine that you are an intelligent assistant helping me to cluster down the list of questions as dependent and independent. The dependent questions are those questions which depends of previous questions or it can answered only by knowing the previous questions. The independent questions are those questions that can be answered without looking at any of previous questions.
+
+Strictly remember the rule:
+    1. Only those question that cannot be answered independenly without knowing the previous on can be added to the dependency list.
+    3. There will not be any questions more than 15.
+    4. Understand questions very clearly, there will be multiple dependent question in previous question list.
+    5. Respond only with json output. Never output anything other than json response.
+
+Note: the keys in the output dictionary is the question numbers and the values assiged to the keys is the list of reference previous question it related to. if previous related question is not independent then that questions dependency should be also included within the list.
+=====================================================================
+Example of previous questions
+
+Previous question list
+1. What is LLM?
+2. What is machine learning.
+
+present_question: What is deep learning?
+
+{{'present_question': 'What is deep learning?', 'dependent_questions':[], 'reason':'The present question can answered independentely and no need for any other context'}}
+
+Example of dependent questions:
+
+Previous question list
+1. What is Machine learning?
+2. What are its benefits?
+
+present question: Why it is used?
+
+{{'present_question': Why it is used?, 'dependent_questions': ['1. What is PaLm2?', '2. What are its benefits?'], 'reason': 'the context of 'it' refres to the first question and second question is also connected'}}
+
+Example of dependent questions:
+1. What is LLM?
+1.1 What are its benefits?
+1.2 Can it solve math problem?
+
+present_question: if yes, then what all kinds of problem it can solve?
+
+{{'present_question': if yes, then what all kinds of problem it can solve?, 'dependent_questions': ['1. What is PaLm2?', '2. What are its benefits?'], 'reason': 'numerically 1.1, 1.2 ... questions are connected and also context wise it is connected'}}
+
+======================================================================
+
+Now identify dependent and independent questions.
+Previous question list
+{prev_ques}
+
+present_question: {query}\n
+
+Extract all the RFP questions
+
+\n{format_instructions}\n

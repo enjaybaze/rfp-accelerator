@@ -1,0 +1,6 @@
+# Specify a logs bucket
+logsBucket: "app-engine-logs-bucket"
+steps:
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+timeout: "1600s"
