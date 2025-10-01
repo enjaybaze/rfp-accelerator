@@ -1,0 +1,35 @@
+Flask
+requests[security]
+gunicorn
+grpcio
+grpcio-tools
+Flask-Cors
+pandas
+psutil
+pyjwt
+beautifulsoup4
+google-api-core
+google-cloud
+google-cloud-automl
+google-cloud-aiplatform==1.36.4
+google
+vertexai
+mysql-connector-python
+cloud-sql-python-connector==1.4.3
+SQLAlchemy==2.0.17
+pg8000==1.29.8
+functions-framework==3.3.0
+PyMySQL==1.1.0
+#new packages for cache testing
+flask-caching
+Flask-Cache
+markdown==3.5.1
+google-cloud-secret-manager==2.16.4
+google-cloud-spanner==3.35.1
+basicauth== 1.0.0
+sqlalchemy
+datetime
+google-api-core==2.15.0
+google-api-python-client==2.111.0
+
+

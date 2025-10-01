@@ -1,0 +1,11 @@
+model_error_msg=The model took too long to respond.
+time_per_question=1
+project_id=<GCP PROJECT ID>
+project_name=<GCP PROJECT NAME>
+environment=dev
+frontend_url=<FRONTEND URL>
+token_timeout=3
+erid_length=6
+time_per_question_running=1
+secret_name=auth-secret-key
+database_details=database-secrets
